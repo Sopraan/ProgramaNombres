@@ -1,43 +1,36 @@
-let fs = require('fs');
+let fs = require("fs");
 
+const PATH = "../ProgramaNombres/archivos/"
 
-let nombres= []
+fs.readdir(PATH, (error, araydeNombresDeLosArchivos) => {
+  if (error) {
+    throw error;
+  } else {
+    console.log(araydeNombresDeLosArchivos)
 
- fs.readdir('../Programa/archivos',(error,files) => {
-
-    if (error){
-        throw error;
-    }
-
-
-     files.forEach(element =>new RegExp('','g') )
-        return files.push(nombres)
-     
-
+    renombrar(araydeNombresDeLosArchivos);
+    
+  }
 });
 
-
-/*
-function nombresSinEspacios(files){
-  let RegEx= new RegExp('','g');
-  return text.replace(files)
-
+function cambiarElNombre(nombre) {
+  nombre = nombre.replace(" ", "");
+  let recorte = nombre.split("_");
+  let nombreCortado = "";
+  for (let i = 0; i < 3; i++) {
+    nombreCortado += recorte[i] + "_";
+  }
+  return `${nombreCortado}.pdf`;
 }
-*/
 
+function renombrar(nombres) {
+  nombres.forEach((cadaNombre) => {
+    fs.rename(PATH + cadaNombre, PATH + cambiarElNombre(cadaNombre), (err) => {
+      if (err) {
+        throw err;
+      }
 
-
-/* fs.rename(file ,'./archivos',(error)=> {
-
-    if (error){
-        throw (error);
-    }
-});
-/*
-
-
-/*fs.readfile('./Programa','utf8',function(err,data){
-
-    console.log(data)
-});
-*/
+      console.log("Rename complete!");
+    });
+  });
+}
