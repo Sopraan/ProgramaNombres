@@ -6,7 +6,7 @@ fs.readdir(PATH, (error, araydeNombresDeLosArchivos) => {
   if (error) {
     throw error;
   } else {
-    console.log(araydeNombresDeLosArchivos)
+    //console.log(araydeNombresDeLosArchivos)
 
     araydeNombresDeLosArchivos = araydeNombresDeLosArchivos.sort();
 
@@ -15,15 +15,46 @@ fs.readdir(PATH, (error, araydeNombresDeLosArchivos) => {
   }
 });
 
-function cambiarElNombre(nombre) {
-  nombre = nombre.replace(" ", "");
+function cambiarElNombre(araydeNombresDeLosArchivos){
+ return araydeNombresDeLosArchivos.map(nombre => {
+
+  nombre = nombre.replaceAll(" ","");
   let recorte = nombre.split("_");
   let nombreCortado = "";
   for (let i = 0; i < 3; i++) {
     nombreCortado += recorte[i] + "_";
   }
   return `${nombreCortado}`;
+ } 
+)
 }
+
+// C_12213123313_3223__dfgdfgdfgdfg
+function renombrar(nombre){
+
+  let i = 0
+  let arrayNombreCortado = cambiarElNombre(nombre)
+arrayNombreCortado.forEach( nombreConNumero=> {
+   
+  let nombreCompleto =`${nombreConNumero}${i++}.pdf`
+console.log(nombreConNumero)
+fs.rename(PATH + nombreConNumero, PATH + nombreCompleto , (err) => {
+    if (err) {
+      throw err;
+    }
+
+    console.log("Rename complete!");
+  });
+});
+
+
+
+}
+
+
+
+
+
 
 /*function renombrar(nombres) {
   let nombresCambiados = [];
@@ -47,31 +78,5 @@ function cambiarElNombre(nombre) {
 }
 
 */
-function renombrar(nombre){
-  cambiarElNombre(nombre)
-nombreCortado.forEach( nombreConNumero=> {
-  let temporalNombreConNumero = nombreConNumero;
-  let i = 0
-  let nombreCompleto =`${temporalNombreConNumero}${i++}.pdf`
-
-fs.rename(PATH + nombreCortado, PATH + nombreCompleto , (err) => {
-    if (err) {
-      throw err;
-    }
-
-    console.log("Rename complete!");
-  });
-});
-
-
-
-}
-
-
-
-
-
-
-
 
 
